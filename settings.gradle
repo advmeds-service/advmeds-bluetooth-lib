@@ -1,2 +1,2 @@
-include ':app', ':bluetooth-lib'
+include ':bluetooth-lib'
 rootProject.name='My Application'
