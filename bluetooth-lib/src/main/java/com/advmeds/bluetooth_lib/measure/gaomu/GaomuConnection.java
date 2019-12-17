@@ -52,7 +52,7 @@ public class GaomuConnection extends BluetoothGattCallback {
             }
 
             servicesDiscoveredDisposable =
-                    Observable.interval(0, 2, TimeUnit.SECONDS)
+                    Observable.intervalRange(0, 2, 1, 2, TimeUnit.SECONDS)
                         .delay(2, TimeUnit.SECONDS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())

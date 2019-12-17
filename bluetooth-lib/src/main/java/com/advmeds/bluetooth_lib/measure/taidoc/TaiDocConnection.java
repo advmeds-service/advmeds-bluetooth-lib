@@ -54,7 +54,7 @@ public class TaiDocConnection extends BluetoothGattCallback {
             }
 
             servicesDiscoveredDisposable =
-                    Observable.interval(0, 2, TimeUnit.SECONDS)
+                    Observable.intervalRange(0, 2, 1, 2, TimeUnit.SECONDS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
                         .subscribe(
@@ -115,12 +115,12 @@ public class TaiDocConnection extends BluetoothGattCallback {
                         }
 
                         descriptorWriteDisposable =
-                                Observable.interval(0, 5, TimeUnit.SECONDS)
+                                Observable.intervalRange(0, 4, 0, 5, TimeUnit.SECONDS)
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(Schedulers.io())
                                     .subscribe(
                                         aLong -> {
-                                            Timber.d("writeDescriptor");
+                                            Timber.d("writeDescriptor : " + aLong);
 
                                             if(aLong == 3) {
                                                 disconnect(gatt);
