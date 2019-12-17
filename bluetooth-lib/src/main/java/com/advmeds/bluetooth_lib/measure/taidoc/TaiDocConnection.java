@@ -30,12 +30,16 @@ public class TaiDocConnection extends BluetoothGattCallback {
 
     private Disposable descriptorWriteDisposable;
 
+    private boolean allowConnect = false;
+
     public TaiDocConnection(TaiDocVariable _variable) {
         variable = _variable;
     }
 
     void startConnect(Context _context, BluetoothDevice bluetoothDevice, TaiDocConnectionCallBack _callBack) {
         this.callBack = _callBack;
+
+        allowConnect = true;
 
         bluetoothDevice.connectGatt(_context, false, this);
     }
@@ -49,6 +53,10 @@ public class TaiDocConnection extends BluetoothGattCallback {
         Timber.d("onConnectionStateChange : "+ status + " to " + newState);
 
         if(newState == BluetoothProfile.STATE_CONNECTED) {
+            if(!allowConnect) {
+                return;
+            }
+
             if(servicesDiscoveredDisposable != null && !servicesDiscoveredDisposable.isDisposed()) {
                 servicesDiscoveredDisposable.dispose();
             }
@@ -210,6 +218,8 @@ public class TaiDocConnection extends BluetoothGattCallback {
 
         _gatt.close();
 
+        allowConnect = false;
+
         callBack.connectionDisconnect();
     }
 
@@ -230,5 +240,7 @@ public class TaiDocConnection extends BluetoothGattCallback {
 
             BT_gatt.close();
         }
+
+        allowConnect = false;
     }
 }

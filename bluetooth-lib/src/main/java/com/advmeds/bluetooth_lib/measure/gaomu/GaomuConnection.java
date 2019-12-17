@@ -28,12 +28,16 @@ public class GaomuConnection extends BluetoothGattCallback {
 
     private Disposable servicesDiscoveredDisposable;
 
+    private boolean allowConnect = false;
+
     public GaomuConnection(GaomuVariable _variable) {
         variable = _variable;
     }
 
     public void startConnect(Context _context, BluetoothDevice bluetoothDevice, GaomuConnectionCallBack _callBack) {
         this.callBack = _callBack;
+
+        allowConnect = true;
 
         bluetoothDevice.connectGatt(_context, false, this);
     }
@@ -47,6 +51,10 @@ public class GaomuConnection extends BluetoothGattCallback {
         Timber.d("onConnectionStateChange : "+ status + " to " + newState);
 
         if(newState == BluetoothProfile.STATE_CONNECTED) {
+            if(!allowConnect) {
+                return;
+            }
+
             if(servicesDiscoveredDisposable != null && !servicesDiscoveredDisposable.isDisposed()) {
                 servicesDiscoveredDisposable.dispose();
             }
@@ -144,6 +152,8 @@ public class GaomuConnection extends BluetoothGattCallback {
 
         _gatt.close();
 
+        allowConnect = false;
+
         callBack.connectionDisconnect();
     }
 
@@ -157,5 +167,7 @@ public class GaomuConnection extends BluetoothGattCallback {
 
             BT_gatt.close();
         }
+
+        allowConnect = false;
     }
 }
