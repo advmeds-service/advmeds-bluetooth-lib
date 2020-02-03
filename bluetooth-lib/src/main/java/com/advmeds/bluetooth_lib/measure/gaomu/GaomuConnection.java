@@ -126,6 +126,8 @@ public class GaomuConnection extends BluetoothGattCallback {
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
         super.onCharacteristicChanged(gatt, characteristic);
 
+        Timber.d("onCharacteristicChanged");
+
         callBack.receiveData(characteristic.getValue());
     }
 
@@ -136,12 +138,18 @@ public class GaomuConnection extends BluetoothGattCallback {
         Timber.d( "On Descriptor Write Status : "  + status);
 
         if(status == BluetoothGatt.GATT_SUCCESS) {
-            gatt.setCharacteristicNotification(descriptor.getCharacteristic(),true);
+            boolean connection_status = gatt.setCharacteristicNotification(descriptor.getCharacteristic(),true);
+
+            if(connection_status) {
+                callBack.onDeviceConnected();
+            }
         }
         else {
             disconnect(gatt);
         }
     }
+
+
 
     private void disconnect(BluetoothGatt _gatt) {
         if(servicesDiscoveredDisposable != null) {

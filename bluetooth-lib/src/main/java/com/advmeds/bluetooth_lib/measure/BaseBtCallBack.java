@@ -6,4 +6,6 @@ public interface BaseBtCallBack {
     void onNoData();
 
     void onReceiveData(String... values);
+
+    void onDeviceConnected();
 }

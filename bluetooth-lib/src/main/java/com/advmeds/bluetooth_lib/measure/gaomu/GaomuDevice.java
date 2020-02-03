@@ -44,4 +44,9 @@ public class GaomuDevice extends BaseBtDevice implements GaomuConnectionCallBack
     public void connectionDisconnect() {
         callBack.onDeivceConnectFail();
     }
+
+    @Override
+    public void onDeviceConnected() {
+        callBack.onDeviceConnected();
+    }
 }

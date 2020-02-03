@@ -4,4 +4,6 @@ public interface GaomuConnectionCallBack {
     void receiveData(byte[] rawData);
 
     void connectionDisconnect();
+
+    void onDeviceConnected();
 }
