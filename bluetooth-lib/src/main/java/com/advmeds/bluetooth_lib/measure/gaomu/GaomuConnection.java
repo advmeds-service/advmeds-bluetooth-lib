@@ -75,7 +75,7 @@ public class GaomuConnection extends BluetoothGattCallback {
                                 Timber.d("discoverServices :" + aLong);
 
                                 if(!allowConnect) {
-                                    Timber.d("allowConnect1 = " + allowConnect);
+                                    Timber.d("allowConnect2 = " + allowConnect);
 
                                     disconnect();
 
@@ -109,7 +109,7 @@ public class GaomuConnection extends BluetoothGattCallback {
         super.onServicesDiscovered(gatt, status);
 
         if(!allowConnect) {
-            Timber.d("allowConnect1 = " + allowConnect);
+            Timber.d("allowConnect3 = " + allowConnect);
 
             disconnect();
 
@@ -148,7 +148,7 @@ public class GaomuConnection extends BluetoothGattCallback {
         super.onCharacteristicChanged(gatt, characteristic);
 
         if(!allowConnect) {
-            Timber.d("allowConnect1 = " + allowConnect);
+            Timber.d("allowConnect4 = " + allowConnect);
 
             disconnect();
 
@@ -165,7 +165,7 @@ public class GaomuConnection extends BluetoothGattCallback {
         super.onDescriptorWrite(gatt, descriptor, status);
 
         if(!allowConnect) {
-            Timber.d("allowConnect1 = " + allowConnect);
+            Timber.d("allowConnect5 = " + allowConnect);
 
             disconnect();
 

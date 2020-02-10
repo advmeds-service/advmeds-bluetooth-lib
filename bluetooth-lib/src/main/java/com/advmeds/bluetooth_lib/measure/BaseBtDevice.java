@@ -8,6 +8,8 @@ public abstract class BaseBtDevice {
 
     protected BaseBtDataDecoder decoder;
 
+    protected boolean autoStopReceive = false;
+
     public BaseBtDevice(BaseBtDataDecoder _decoder) {
         decoder = _decoder;
     }
@@ -18,5 +20,9 @@ public abstract class BaseBtDevice {
 
     public void setCallBack(BaseBtCallBack _callBack) {
         this.callBack = _callBack;
+    }
+
+    public void setAutoStopReceive(boolean auto) {
+        this.autoStopReceive = auto;
     }
 }

@@ -35,6 +35,11 @@ public class TaiDocDevice extends BaseBtDevice implements TaiDocConnectionCallBa
         String[] data = decoder.decode(rawData);
 
         if(data != null) {
+            if(autoStopReceive) {
+                if(taiDocConnection != null) {
+                    taiDocConnection.stopReceiveData();
+                }
+            }
             callBack.onReceiveData(data);
         }
         else {
