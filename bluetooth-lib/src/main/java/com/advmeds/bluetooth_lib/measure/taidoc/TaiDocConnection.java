@@ -69,6 +69,11 @@ public class TaiDocConnection extends BluetoothGattCallback {
                             aLong -> {
                                 Timber.d("discoverServices :" + aLong);
 
+                                if(!allowConnect) {
+                                    servicesDiscoveredDisposable.dispose();
+
+                                    return;
+                                }
                                 if(aLong == 1) {
                                     disconnect(gatt);
                                 }
@@ -95,6 +100,12 @@ public class TaiDocConnection extends BluetoothGattCallback {
     @Override
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
         super.onServicesDiscovered(gatt, status);
+
+        if(!allowConnect) {
+            servicesDiscoveredDisposable.dispose();
+
+            return;
+        }
 
         if (status == BluetoothGatt.GATT_SUCCESS) {
             Timber.d("GATT_SUCCESS");
@@ -129,7 +140,11 @@ public class TaiDocConnection extends BluetoothGattCallback {
                                     .subscribe(
                                         aLong -> {
                                             Timber.d("writeDescriptor : " + aLong);
+                                            if(!allowConnect) {
+                                                servicesDiscoveredDisposable.dispose();
 
+                                                return;
+                                            }
                                             if(aLong == 3) {
                                                 disconnect(gatt);
                                             }
@@ -162,6 +177,12 @@ public class TaiDocConnection extends BluetoothGattCallback {
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
         super.onCharacteristicChanged(gatt, characteristic);
 
+        if(!allowConnect) {
+            disconnect();
+
+            return;
+        }
+
         Timber.d( "onCharacteristicChanged : " + characteristic.getValue().length);
 
         for(int i = 0 ; i < characteristic.getValue().length ; i ++) {
@@ -175,6 +196,12 @@ public class TaiDocConnection extends BluetoothGattCallback {
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
         super.onCharacteristicWrite(gatt, characteristic, status);
 
+        if(!allowConnect) {
+            disconnect();
+
+            return;
+        }
+
         Timber.d( "onCharacteristicWrite : "  + status);
 
         if(status != BluetoothGatt.GATT_SUCCESS) {
@@ -185,6 +212,12 @@ public class TaiDocConnection extends BluetoothGattCallback {
     @Override
     public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
         super.onDescriptorWrite(gatt, descriptor, status);
+
+        if(!allowConnect) {
+            disconnect();
+
+            return;
+        }
 
         Timber.d( "On Descriptor Write Status : "  + status);
 
@@ -206,6 +239,8 @@ public class TaiDocConnection extends BluetoothGattCallback {
      * @param _gatt
      */
     private void disconnect(BluetoothGatt _gatt) {
+        allowConnect = false;
+
         if(servicesDiscoveredDisposable != null) {
             servicesDiscoveredDisposable.dispose();
         }
@@ -227,6 +262,8 @@ public class TaiDocConnection extends BluetoothGattCallback {
      * 外部調用專用的disconnect
      */
     void disconnect() {
+        allowConnect = false;
+
         if(servicesDiscoveredDisposable != null) {
             servicesDiscoveredDisposable.dispose();
         }
