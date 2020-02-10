@@ -22,7 +22,9 @@ public abstract class BaseBtDevice {
         this.callBack = _callBack;
     }
 
-    public void setAutoStopReceive(boolean auto) {
+    public BaseBtDevice setAutoStopReceive(boolean auto) {
         this.autoStopReceive = auto;
+
+        return this;
     }
 }
