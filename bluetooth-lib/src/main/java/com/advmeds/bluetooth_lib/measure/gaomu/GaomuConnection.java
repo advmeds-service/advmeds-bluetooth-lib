@@ -50,14 +50,16 @@ public class GaomuConnection extends BluetoothGattCallback {
 
         Timber.d("onConnectionStateChange : "+ status + " to " + newState);
 
+        if(!allowConnect) {
+            Timber.d("allowConnect1 = " + allowConnect);
+
+            disconnect();
+
+            return;
+        }
+
         if(newState == BluetoothProfile.STATE_CONNECTED) {
-            if(!allowConnect) {
-                Timber.d("allowConnect1 = " + allowConnect);
 
-                disconnect();
-
-                return;
-            }
 
             if(servicesDiscoveredDisposable != null && !servicesDiscoveredDisposable.isDisposed()) {
                 servicesDiscoveredDisposable.dispose();
