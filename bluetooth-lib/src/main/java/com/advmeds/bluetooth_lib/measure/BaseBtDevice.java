@@ -10,6 +10,8 @@ public abstract class BaseBtDevice {
 
     protected boolean autoStopReceive = false;
 
+    protected boolean autoShutdown = false;
+
     public BaseBtDevice(BaseBtDataDecoder _decoder) {
         decoder = _decoder;
     }
@@ -24,6 +26,12 @@ public abstract class BaseBtDevice {
 
     public BaseBtDevice setAutoStopReceive(boolean auto) {
         this.autoStopReceive = auto;
+
+        return this;
+    }
+
+    public BaseBtDevice setShutdownAfterReceive(boolean auto_shutdown) {
+        this.autoShutdown = auto_shutdown;
 
         return this;
     }

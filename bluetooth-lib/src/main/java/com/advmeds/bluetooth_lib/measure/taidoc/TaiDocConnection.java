@@ -257,6 +257,18 @@ public class TaiDocConnection extends BluetoothGattCallback {
         }
     }
 
+    public void shutdown() {
+        if(BT_gatt != null) {
+            BluetoothGattService bluetoothGattService = BT_gatt.getService(UUID.fromString(variable.getServicesUUID()));
+
+            BluetoothGattCharacteristic characteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getCharactersticUUID()));
+
+            characteristic.setValue(variable.getShutdownCommand());
+
+            BT_gatt.writeCharacteristic(characteristic);
+        }
+    }
+
     /**
      * 內部調用專用的disconnect
      * @param _gatt

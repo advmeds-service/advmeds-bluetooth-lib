@@ -6,4 +6,6 @@ public interface TaiDocVariable {
     byte[] getDataCommand();
 
     String getCharactersticUUID();
+
+    byte[] getShutdownCommand();
 }

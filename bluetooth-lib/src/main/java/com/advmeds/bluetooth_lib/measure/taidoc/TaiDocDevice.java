@@ -40,6 +40,12 @@ public class TaiDocDevice extends BaseBtDevice implements TaiDocConnectionCallBa
                     taiDocConnection.stopReceiveData();
                 }
             }
+            if(autoShutdown) {
+                if(taiDocConnection != null) {
+                    taiDocConnection.shutdown();
+                }
+            }
+
             callBack.onReceiveData(data);
         }
         else {
