@@ -1,4 +1,4 @@
-package com.advmeds.bluetooth_lib.measure.taidoc;
+package com.advmeds.bluetooth_lib.measure.taidoc.connection;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 
+import com.advmeds.bluetooth_lib.measure.taidoc.TaiDocConnectionCallBack;
 import com.advmeds.bluetooth_lib.measure.taidoc.variable.TaiDocVariable;
 
 import java.util.UUID;
@@ -19,46 +20,20 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class TaiDocConnection extends BluetoothGattCallback {
+public class TaiDocConnection extends TaiDocBaseConnection {
     private TaiDocVariable variable;
-
-    private BluetoothGatt BT_gatt;
-
-    private TaiDocConnectionCallBack callBack;
 
     private Disposable servicesDiscoveredDisposable;
 
     private Disposable descriptorWriteDisposable;
 
-    private boolean allowConnect = false;
-
     public TaiDocConnection(TaiDocVariable _variable) {
         variable = _variable;
-    }
-
-    void startConnect(Context _context, BluetoothDevice bluetoothDevice, TaiDocConnectionCallBack _callBack) {
-        this.callBack = _callBack;
-
-        allowConnect = true;
-
-        bluetoothDevice.connectGatt(_context, false, this);
     }
 
     @Override
     public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
         super.onConnectionStateChange(gatt, status, newState);
-
-        BT_gatt = gatt;
-
-        Timber.d("onConnectionStateChange : "+ status + " to " + newState);
-
-        if(!allowConnect) {
-            Timber.d("allowConnect1 = " + allowConnect);
-
-            disconnect();
-
-            return;
-        }
 
         if(newState == BluetoothProfile.STATE_CONNECTED) {
             if(servicesDiscoveredDisposable != null && !servicesDiscoveredDisposable.isDisposed()) {
@@ -107,14 +82,6 @@ public class TaiDocConnection extends BluetoothGattCallback {
     @Override
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
         super.onServicesDiscovered(gatt, status);
-
-        if(!allowConnect) {
-            Timber.d("allowConnect3 = " + allowConnect);
-
-            disconnect();
-
-            return;
-        }
 
         if (status == BluetoothGatt.GATT_SUCCESS) {
             Timber.d("GATT_SUCCESS");
@@ -188,14 +155,6 @@ public class TaiDocConnection extends BluetoothGattCallback {
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
         super.onCharacteristicChanged(gatt, characteristic);
 
-        if(!allowConnect) {
-            Timber.d("allowConnect5 = " + allowConnect);
-
-            disconnect();
-
-            return;
-        }
-
         Timber.d( "onCharacteristicChanged : " + characteristic.getValue().length);
 
         for(int i = 0 ; i < characteristic.getValue().length ; i ++) {
@@ -209,14 +168,6 @@ public class TaiDocConnection extends BluetoothGattCallback {
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
         super.onCharacteristicWrite(gatt, characteristic, status);
 
-        if(!allowConnect) {
-            Timber.d("allowConnect6 = " + allowConnect);
-
-            disconnect();
-
-            return;
-        }
-
         Timber.d( "onCharacteristicWrite : "  + status);
 
         if(status != BluetoothGatt.GATT_SUCCESS) {
@@ -227,14 +178,6 @@ public class TaiDocConnection extends BluetoothGattCallback {
     @Override
     public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
         super.onDescriptorWrite(gatt, descriptor, status);
-
-        if(!allowConnect) {
-            Timber.d("allowConnect7 = " + allowConnect);
-
-            disconnect();
-
-            return;
-        }
 
         Timber.d( "On Descriptor Write Status : "  + status);
 
@@ -251,12 +194,7 @@ public class TaiDocConnection extends BluetoothGattCallback {
         }
     }
 
-    public void stopReceiveData() {
-        if(descriptorWriteDisposable != null) {
-            descriptorWriteDisposable.dispose();
-        }
-    }
-
+    @Override
     public void shutdown() {
         if(BT_gatt != null) {
             BluetoothGattService bluetoothGattService = BT_gatt.getService(UUID.fromString(variable.getServicesUUID()));
@@ -269,13 +207,8 @@ public class TaiDocConnection extends BluetoothGattCallback {
         }
     }
 
-    /**
-     * 內部調用專用的disconnect
-     * @param _gatt
-     */
-    private void disconnect(BluetoothGatt _gatt) {
-        allowConnect = false;
-
+    @Override
+    public void onDisconnect() {
         if(servicesDiscoveredDisposable != null) {
             servicesDiscoveredDisposable.dispose();
         }
@@ -283,36 +216,12 @@ public class TaiDocConnection extends BluetoothGattCallback {
         if(descriptorWriteDisposable != null) {
             descriptorWriteDisposable.dispose();
         }
-
-        _gatt.disconnect();
-
-        _gatt.close();
-
-        allowConnect = false;
-
-        callBack.connectionDisconnect();
     }
 
-    /**
-     * 外部調用專用的disconnect
-     */
-    void disconnect() {
-        allowConnect = false;
-
-        if(servicesDiscoveredDisposable != null) {
-            servicesDiscoveredDisposable.dispose();
-        }
-
+    @Override
+    public void onDenyNotify() {
         if(descriptorWriteDisposable != null) {
             descriptorWriteDisposable.dispose();
         }
-
-        if(BT_gatt != null) {
-            BT_gatt.disconnect();
-
-            BT_gatt.close();
-        }
-
-        allowConnect = false;
     }
 }

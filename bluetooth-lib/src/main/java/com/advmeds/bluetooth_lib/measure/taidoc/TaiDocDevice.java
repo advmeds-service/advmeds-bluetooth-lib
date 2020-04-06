@@ -5,29 +5,31 @@ import android.content.Context;
 
 import com.advmeds.bluetooth_lib.measure.BaseBtDataDecoder;
 import com.advmeds.bluetooth_lib.measure.BaseBtDevice;
+import com.advmeds.bluetooth_lib.measure.taidoc.connection.TaiDocBaseConnection;
+import com.advmeds.bluetooth_lib.measure.taidoc.connection.TaiDocConnection;
 import com.advmeds.bluetooth_lib.measure.taidoc.variable.TaiDocVariable;
 
 public class TaiDocDevice extends BaseBtDevice implements TaiDocConnectionCallBack {
-    private TaiDocConnection taiDocConnection;
+    private TaiDocBaseConnection taiDocBaseConnection;
 
     public TaiDocDevice(
             BaseBtDataDecoder _decoder
-            , TaiDocVariable _taiDocVariable) {
+            , TaiDocBaseConnection connection) {
         super(_decoder);
 
-        taiDocConnection = new TaiDocConnection(_taiDocVariable);
+        taiDocBaseConnection = connection;
     }
 
     @Override
     public void disconnect() {
-        taiDocConnection.disconnect();
+        taiDocBaseConnection.disconnect();
     }
 
     @Override
     public void startConnect(Context context, BluetoothDevice device) {
-        taiDocConnection.disconnect();
+        taiDocBaseConnection.disconnect();
 
-        taiDocConnection.startConnect(context, device, this);
+        taiDocBaseConnection.startConnect(context, device, this);
     }
 
     @Override
@@ -36,13 +38,13 @@ public class TaiDocDevice extends BaseBtDevice implements TaiDocConnectionCallBa
 
         if(data != null) {
             if(autoStopReceive) {
-                if(taiDocConnection != null) {
-                    taiDocConnection.stopReceiveData();
+                if(taiDocBaseConnection != null) {
+                    taiDocBaseConnection.setAllowNotify(false);
                 }
             }
             if(autoShutdown) {
-                if(taiDocConnection != null) {
-                    taiDocConnection.shutdown();
+                if(taiDocBaseConnection != null) {
+                    taiDocBaseConnection.shutdown();
                 }
             }
 

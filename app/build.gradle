@@ -17,12 +17,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
+    def constraintlayout_version = "2.0.0-beta1"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+    implementation 'com.jakewharton.timber:timber:4.7.1' //Log
+
+    implementation 'com.vise.xiaoyaoyou:baseble:2.0.6' //藍芽搜尋
+
+    implementation project(':bluetooth-lib')
 }
