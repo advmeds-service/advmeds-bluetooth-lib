@@ -52,7 +52,7 @@ abstract public class TaiDocBaseConnection extends BluetoothGattCallback {
 
             disconnect();
 
-            return;
+            throw new RuntimeException("Not allow connect");
         }
     }
 
@@ -65,12 +65,12 @@ abstract public class TaiDocBaseConnection extends BluetoothGattCallback {
 
             disconnect();
 
-            return;
+            throw new RuntimeException("Not allow connect");
         }
     }
 
     @Override
-    public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+    public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic){
         super.onCharacteristicChanged(gatt, characteristic);
 
         if(!allowConnect) {
@@ -78,13 +78,13 @@ abstract public class TaiDocBaseConnection extends BluetoothGattCallback {
 
             disconnect();
 
-            return;
+            throw new RuntimeException("Not allow connect");
         }
 
         if(!allowNotify) {
             Timber.d("allowNotify = " + allowNotify);
 
-            return;
+            throw new RuntimeException("Not allow notify");
         }
     }
 
@@ -97,7 +97,7 @@ abstract public class TaiDocBaseConnection extends BluetoothGattCallback {
 
             disconnect();
 
-            return;
+            throw new RuntimeException("Not allow connect");
         }
     }
 
@@ -110,7 +110,7 @@ abstract public class TaiDocBaseConnection extends BluetoothGattCallback {
 
             disconnect();
 
-            return;
+            throw new RuntimeException("Not allow connect");
         }
     }
 

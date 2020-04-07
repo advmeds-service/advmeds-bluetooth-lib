@@ -5,6 +5,10 @@ public class TaiDocMeterVariable {
         return "00001808-0000-1000-8000-00805f9b34fb";
     }
 
+    public String getShutDownServicesUUID() {
+        return "00001523-1212-EFDE-1523-785FEABCD123";
+    }
+
     public byte[] getDataCommand() {
         return new byte[]{(byte)0x01, (byte)0x01};
     }
@@ -15,6 +19,10 @@ public class TaiDocMeterVariable {
 
     public String getReceiveCharactersticUUID() {
         return "00002a18-0000-1000-8000-00805f9b34fb";
+    }
+
+    public String getShutDownCharactersticUUID() {
+        return "00001524-1212-EFDE-1523-785FEABCD123";
     }
 
     public byte[] getShutdownCommand() {

@@ -22,12 +22,13 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
     private ScanCallback scanCallback = new ScanCallback(this);
 
     private String deviceName = "TAIDOC TD4216";
+    private String searchName = "TAIDOC METER";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        baseBtDevice = BaseBtDeviceFactory.createBtDevice(deviceName);
+        baseBtDevice = BaseBtDeviceFactory.createBtDevice(deviceName).setAutoStopReceive(true).setShutdownAfterReceive(true);
 
         baseBtDevice.setCallBack(this);
 
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
     public void onDeviceFound(BluetoothLeDevice bluetoothLeDevice) {
         Timber.d("onDeviceFound : %s", bluetoothLeDevice.getName());
 
-        if (bluetoothLeDevice.getName() != null && bluetoothLeDevice.getName().contains(deviceName) && scanCallback.isScanning()) {
+        if (bluetoothLeDevice.getName() != null && bluetoothLeDevice.getName().contains(searchName) && scanCallback.isScanning()) {
             ViseBle.getInstance().stopScan(scanCallback);
 
             baseBtDevice.startConnect(this, bluetoothLeDevice.getDevice());

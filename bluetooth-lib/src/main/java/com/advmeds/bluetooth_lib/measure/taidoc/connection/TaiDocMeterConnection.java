@@ -226,9 +226,9 @@ public class TaiDocMeterConnection extends TaiDocBaseConnection {
     @Override
     public void shutdown() {
         if(BT_gatt != null) {
-            BluetoothGattService bluetoothGattService = BT_gatt.getService(UUID.fromString(variable.getServicesUUID()));
+            BluetoothGattService bluetoothGattService = BT_gatt.getService(UUID.fromString(variable.getShutDownServicesUUID()));
 
-            BluetoothGattCharacteristic characteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getSendCharactersticUUID()));
+            BluetoothGattCharacteristic characteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getShutDownCharactersticUUID()));
 
             characteristic.setValue(variable.getShutdownCommand());
 
