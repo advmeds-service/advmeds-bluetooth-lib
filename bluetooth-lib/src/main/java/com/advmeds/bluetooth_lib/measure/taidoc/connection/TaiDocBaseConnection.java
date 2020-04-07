@@ -34,6 +34,8 @@ abstract public class TaiDocBaseConnection extends BluetoothGattCallback {
 
         allowConnect = true;
 
+        allowNotify = true;
+
         bluetoothDevice.connectGatt(_context, false, this);
     }
 
