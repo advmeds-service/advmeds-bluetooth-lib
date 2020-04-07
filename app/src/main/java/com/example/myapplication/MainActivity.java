@@ -21,14 +21,14 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
 
     private ScanCallback scanCallback = new ScanCallback(this);
 
-    private String deviceName = "TAIDOC TD4216";
-    private String searchName = "TAIDOC METER";
+    private String deviceName = "FORA IR42";
+    private String searchName = "FORA IR42";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        baseBtDevice = BaseBtDeviceFactory.createBtDevice(deviceName).setAutoStopReceive(true).setShutdownAfterReceive(true);
+        baseBtDevice = BaseBtDeviceFactory.createBtDevice(deviceName).setAutoStopReceive(true);
 
         baseBtDevice.setCallBack(this);
 

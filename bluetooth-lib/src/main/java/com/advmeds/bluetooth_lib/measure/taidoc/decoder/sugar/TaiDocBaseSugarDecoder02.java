@@ -7,6 +7,7 @@ import timber.log.Timber;
 /**
  * 適用機台:
  *      TAIDOC TD4206(WITH METER)
+ *      TAIDOC TD4216
  */
 public class TaiDocBaseSugarDecoder02 implements BaseBtDataDecoder {
     @Override
@@ -17,15 +18,15 @@ public class TaiDocBaseSugarDecoder02 implements BaseBtDataDecoder {
             return null;
         }
 
-        double ua = (receiveData[12] & 0xFF);
+        int sugar = (receiveData[12] & 0xFF);
 
-        if(ua < 4
-                || ua >= 255) {
+        if(sugar < 4
+                || sugar >= 255) {
             return null;
         }
 
         Timber.d("Decode Success");
 
-        return new String[] {String.valueOf(ua)};
+        return new String[] {String.valueOf(sugar)};
     }
 }
