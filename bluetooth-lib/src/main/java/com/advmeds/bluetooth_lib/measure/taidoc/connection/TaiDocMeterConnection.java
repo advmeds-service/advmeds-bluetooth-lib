@@ -192,6 +192,7 @@ public class TaiDocMeterConnection extends TaiDocBaseConnection {
         super.onDescriptorWrite(gatt, descriptor, status);
 
         Timber.d( "On Descriptor Write Status : "  + status);
+        Timber.d( "On Descriptor Write Characteristic : "  + descriptor.getCharacteristic().getUuid().toString());
 
         if(status == BluetoothGatt.GATT_SUCCESS) {
             if(descriptorWriteDisposable != null) {
@@ -199,16 +200,9 @@ public class TaiDocMeterConnection extends TaiDocBaseConnection {
             }
 
             if(descriptor.getCharacteristic().getUuid().toString().equals(variable.getSendCharactersticUUID())) {
-                BluetoothGattCharacteristic characteristic = descriptor.getCharacteristic();
-
-                characteristic.setValue(variable.getDataCommand());
-
-                gatt.writeCharacteristic(characteristic);
-            }
-            else if(descriptor.getCharacteristic().getUuid().toString().equals(variable.getReceiveCharactersticUUID())) {
                 BluetoothGattService bluetoothGattService = gatt.getService(UUID.fromString(variable.getServicesUUID()));
 
-                BluetoothGattCharacteristic characteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getSendCharactersticUUID()));
+                BluetoothGattCharacteristic characteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getReceiveCharactersticUUID()));
 
                 BluetoothGattDescriptor sendDescriptor = characteristic.getDescriptors().get(0);
 
@@ -216,6 +210,15 @@ public class TaiDocMeterConnection extends TaiDocBaseConnection {
                         || !gatt.writeDescriptor(sendDescriptor)) {
                     disconnect(gatt);
                 }
+            }
+            else if(descriptor.getCharacteristic().getUuid().toString().equals(variable.getReceiveCharactersticUUID())) {
+                BluetoothGattService bluetoothGattService = gatt.getService(UUID.fromString(variable.getServicesUUID()));
+
+                BluetoothGattCharacteristic characteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getSendCharactersticUUID()));
+
+                characteristic.setValue(variable.getDataCommand());
+
+                gatt.writeCharacteristic(characteristic);
             }
         }
         else {
