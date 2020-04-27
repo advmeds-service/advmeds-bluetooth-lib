@@ -8,7 +8,7 @@ public class TaiDocTD3140Variable implements TaiDocVariable {
 
     @Override
     public byte[] getDataCommand() {
-        return new byte[]{(byte)0x51, (byte)0x43, (byte)0x00, (byte)0x00, (byte)0x01, (byte)0x01, (byte)0xA3, (byte)0x39};
+        return new byte[]{(byte)0x51, (byte)0x26, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x01, (byte)0xA3, (byte)0x1B};
     }
 
     @Override

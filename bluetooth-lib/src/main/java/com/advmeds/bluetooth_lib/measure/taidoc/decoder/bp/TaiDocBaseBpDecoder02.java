@@ -10,13 +10,12 @@ public class TaiDocBaseBpDecoder02 implements BaseBtDataDecoder {
     public String[] decode(byte[] receiveData) {
         if(receiveData == null
                 || receiveData.length != 8
-                || receiveData[3] == 0
-                || receiveData[5] == 0
-                || receiveData[1] != 67) {
+                || receiveData[2] == 0
+                || receiveData[5] == 0) {
             return null;
         }
 
-        String sbp = String.valueOf(receiveData[3] & 0xFF);
+        String sbp = String.valueOf(receiveData[2] & 0xFF);
 
         String dbp = String.valueOf(receiveData[4] & 0xFF);
 

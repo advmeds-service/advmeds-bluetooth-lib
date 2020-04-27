@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
 
     private ScanCallback scanCallback = new ScanCallback(this);
 
-    private String deviceName = "TAIDOC TD4206";
-    private String searchName = "TAIDOC METER";
+    private String deviceName = "TAIDOC TD3140";
+    private String searchName = "TAIDOC TD3140";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
         baseBtDevice.setCallBack(this);
 
         ViseBle.getInstance().startScan(scanCallback);
+
+        Timber.d((2 & 2) + "");
     }
 
     @Override
