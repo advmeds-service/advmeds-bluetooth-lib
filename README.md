@@ -1,5 +1,7 @@
 # advmeds-bluetooth-lib
-advmeds-bluetooth-lib
+advmeds-bluetooth-lib 
+
+Newest version : <img src="https://img.shields.io/github/v/release/advmeds-service/advmeds-bluetooth-lib.svg">
 
 使用方法:
 
