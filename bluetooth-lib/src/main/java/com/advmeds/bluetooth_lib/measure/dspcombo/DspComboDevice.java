@@ -1,4 +1,4 @@
-package com.advmeds.bluetooth_lib.measure.taidoc;
+package com.advmeds.bluetooth_lib.measure.dspcombo;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -8,10 +8,10 @@ import com.advmeds.bluetooth_lib.measure.BaseBtDevice;
 import com.advmeds.bluetooth_lib.measure.BaseConnection;
 import com.advmeds.bluetooth_lib.measure.BaseConnectionCallBack;
 
-public class TaiDocDevice extends BaseBtDevice implements BaseConnectionCallBack {
+public class DspComboDevice extends BaseBtDevice implements BaseConnectionCallBack {
     private BaseConnection baseConnection;
 
-    public TaiDocDevice(
+    public DspComboDevice(
             BaseBtDataDecoder _decoder
             , BaseConnection connection) {
         super(_decoder);

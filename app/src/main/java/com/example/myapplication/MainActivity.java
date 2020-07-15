@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,14 +23,22 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
 
     private ScanCallback scanCallback = new ScanCallback(this);
 
-    private String deviceName = "TAIDOC TD3140";
-    private String searchName = "TAIDOC TD3140";
+    private String deviceName = "BDE_WEIXIN_TTM";
+    private String searchName = "BDE_WEIXIN_TTM";
+
+    // 632 = 30:45:11:E3:BC:67
+    //
+    // 633 = 30:45:11:E3:C7:86
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        baseBtDevice = BaseBtDeviceFactory.createBtDevice(deviceName).setAutoStopReceive(true).setShutdownAfterReceive(true);
+        Log.d("Device", Build.DEVICE);
+
+        baseBtDevice = BaseBtDeviceFactory.createBtDevice(deviceName)
+                .setAutoStopReceive(true)
+                .setShutdownAfterReceive(true);
 
         baseBtDevice.setCallBack(this);
 
@@ -50,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
     @Override
     public void onReceiveData(String... values) {
         Timber.d("onReceiveData");
+
+        Timber.d(values[0]);
     }
 
     @Override
@@ -60,8 +72,10 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
     @Override
     public void onDeviceFound(BluetoothLeDevice bluetoothLeDevice) {
         Timber.d("onDeviceFound : %s", bluetoothLeDevice.getName());
+//        Timber.d("onDeviceFound : %s", bluetoothLeDevice.getAddress());
 
-        if (bluetoothLeDevice.getName() != null && bluetoothLeDevice.getName().contains(searchName) && scanCallback.isScanning()) {
+        if (bluetoothLeDevice.getName() != null && bluetoothLeDevice.getName().contains(searchName) && scanCallback.isScanning() && bluetoothLeDevice.getAddress().equals("30:45:11:E3:BC:67")) {
+            Timber.d("onDeviceFound : %s", bluetoothLeDevice.getAddress());
             ViseBle.getInstance().stopScan(scanCallback);
 
             baseBtDevice.startConnect(this, bluetoothLeDevice.getDevice());

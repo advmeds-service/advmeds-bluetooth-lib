@@ -1,18 +1,14 @@
-package com.advmeds.bluetooth_lib.measure.taidoc.connection;
+package com.advmeds.bluetooth_lib.measure.dspcombo;
 
-import android.bluetooth.BluetoothDevice;
+
 import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
-import android.content.Context;
 
 import com.advmeds.bluetooth_lib.measure.BaseConnection;
-import com.advmeds.bluetooth_lib.measure.taidoc.TaiDocConnectionCallBack;
-import com.advmeds.bluetooth_lib.measure.taidoc.variable.TaiDocMeterVariable;
-import com.advmeds.bluetooth_lib.measure.taidoc.variable.TaiDocVariable;
+import com.advmeds.bluetooth_lib.measure.dspcombo.variable.DspComboVariable;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -22,14 +18,16 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class TaiDocMeterConnection extends BaseConnection {
-    private TaiDocMeterVariable variable;
+public class DspComboConnection extends BaseConnection {
+    private DspComboVariable variable;
 
     private Disposable servicesDiscoveredDisposable;
 
+    private Disposable characteristicWriteDisposable;
+
     private Disposable descriptorWriteDisposable;
 
-    public TaiDocMeterConnection(TaiDocMeterVariable _variable) {
+    public DspComboConnection(DspComboVariable _variable) {
         variable = _variable;
     }
 
@@ -43,7 +41,7 @@ public class TaiDocMeterConnection extends BaseConnection {
             }
 
             servicesDiscoveredDisposable =
-                    Observable.intervalRange(0, 2, 0, 2, TimeUnit.SECONDS)
+                    Observable.intervalRange(0, 2, 1, 2, TimeUnit.SECONDS)
                             .subscribeOn(Schedulers.io())
                             .observeOn(Schedulers.io())
                             .subscribe(
@@ -90,28 +88,19 @@ public class TaiDocMeterConnection extends BaseConnection {
 
             servicesDiscoveredDisposable.dispose();
 
-            for(BluetoothGattService service : gatt.getServices()) {
-                Timber.d(String.valueOf(service.getUuid()));
-            }
             try {
                 BluetoothGattService bluetoothGattService = gatt.getService(UUID.fromString(variable.getServicesUUID()));
 
-                BluetoothGattCharacteristic sendCharacteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getSendCharactersticUUID()));
+                BluetoothGattCharacteristic characteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getCharactersticUUID()));
 
-                BluetoothGattDescriptor sendDescriptor = sendCharacteristic.getDescriptors().get(0);
+                BluetoothGattDescriptor descriptor = characteristic.getDescriptors().get(0);
 
-                BluetoothGattCharacteristic receiveCharacteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getReceiveCharactersticUUID()));
-
-                BluetoothGattDescriptor receiveDescriptor = receiveCharacteristic.getDescriptors().get(0);
-
-                if(gatt.setCharacteristicNotification(sendCharacteristic, true)
-                    && gatt.setCharacteristicNotification(receiveCharacteristic, true)) {
+                if(gatt.setCharacteristicNotification(characteristic, true)) {
                     Timber.d("setCharacteristicNotification true");
 
-
-
-                    if((sendDescriptor == null || !sendDescriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE))
-                            && (receiveDescriptor == null || !receiveDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE))) {
+//                    characteristic.setWriteType(BluetoothGattCharacteristic.);
+                    if(descriptor == null
+                            || !descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)) {
                         Timber.d("Write Descriptor Fail");
 
                         disconnect(gatt);
@@ -122,7 +111,7 @@ public class TaiDocMeterConnection extends BaseConnection {
                         }
 
                         descriptorWriteDisposable =
-                                Observable.intervalRange(0, 4, 1, 5, TimeUnit.SECONDS)
+                                Observable.intervalRange(0, 4, 0, 5, TimeUnit.SECONDS)
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(Schedulers.io())
                                         .subscribe(
@@ -139,7 +128,7 @@ public class TaiDocMeterConnection extends BaseConnection {
                                                         disconnect(gatt);
                                                     }
                                                     else if(aLong < 3){
-                                                        Observable.just(gatt.writeDescriptor(sendDescriptor)).subscribe();
+                                                        Observable.just(gatt.writeDescriptor(descriptor)).subscribe();
                                                     }
                                                     else {
                                                         descriptorWriteDisposable.dispose();
@@ -163,80 +152,111 @@ public class TaiDocMeterConnection extends BaseConnection {
         }
     }
 
+
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
         super.onCharacteristicChanged(gatt, characteristic);
 
-        Timber.d( "onCharacteristicChanged : " + characteristic.getValue().length);
+        Timber.d("onCharacteristicChanged");
 
-        for(int i = 0 ; i < characteristic.getValue().length ; i ++) {
-//            Timber.d("" + characteristic.getValue()[i]);
-            Timber.d("" + (characteristic.getValue()[i] & 0xFF));
+        Timber.d(new String(characteristic.getValue()));
+
+        String response = new String(characteristic.getValue());
+
+        if(response.contains("DDDLZT")) {
+            execCharacteristicWrite(gatt, characteristic, variable.getNextStepCommand(response), 5);
         }
+        else if(response.contains("DDHJER")) {
+            execCharacteristicWrite(gatt, characteristic, variable.getNextStepCommand(response), 60);
+        }
+        else if(response.contains("CCFRSZ$")) {
+            execCharacteristicWrite(gatt, characteristic, variable.getNextStepCommand(response), 150);
+        }
+        else if(response.contains("DDCSZY")) {
+            stopCharacteristicWrite();
 
-        callBack.receiveData(characteristic.getValue());
+            callBack.receiveData(characteristic.getValue());
+        }
     }
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
         super.onCharacteristicWrite(gatt, characteristic, status);
 
-        Timber.d( "onCharacteristicWrite : "  + status);
-
-        if(status != BluetoothGatt.GATT_SUCCESS) {
-            disconnect(gatt);
-        }
+        Timber.d("onCharacteristicWrite");
     }
 
     @Override
     public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
         super.onDescriptorWrite(gatt, descriptor, status);
 
-        Timber.d( "On Descriptor Write Status : "  + status);
-        Timber.d( "On Descriptor Write Characteristic : "  + descriptor.getCharacteristic().getUuid().toString());
+        Timber.d("onDescriptorWrite" + status);
 
         if(status == BluetoothGatt.GATT_SUCCESS) {
-            if(descriptorWriteDisposable != null) {
+            if(descriptorWriteDisposable != null && !descriptorWriteDisposable.isDisposed()) {
                 descriptorWriteDisposable.dispose();
             }
 
-            if(descriptor.getCharacteristic().getUuid().toString().equals(variable.getSendCharactersticUUID())) {
-                BluetoothGattService bluetoothGattService = gatt.getService(UUID.fromString(variable.getServicesUUID()));
-
-                BluetoothGattCharacteristic characteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getReceiveCharactersticUUID()));
-
-                BluetoothGattDescriptor sendDescriptor = characteristic.getDescriptors().get(0);
-
-                if(!sendDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)
-                        || !gatt.writeDescriptor(sendDescriptor)) {
-                    disconnect(gatt);
-                }
-            }
-            else if(descriptor.getCharacteristic().getUuid().toString().equals(variable.getReceiveCharactersticUUID())) {
-                BluetoothGattService bluetoothGattService = gatt.getService(UUID.fromString(variable.getServicesUUID()));
-
-                BluetoothGattCharacteristic characteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getSendCharactersticUUID()));
-
-                characteristic.setValue(variable.getDataCommand());
-
-                gatt.writeCharacteristic(characteristic);
-            }
+           execCharacteristicWrite(gatt, descriptor.getCharacteristic(), variable.getInitialCommand(), 5);
         }
-        else {
-            disconnect(gatt);
+    }
+
+    private void stopCharacteristicWrite() {
+        if(characteristicWriteDisposable != null && !characteristicWriteDisposable.isDisposed()) {
+            characteristicWriteDisposable.dispose();
         }
+    }
+
+    private void execCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, String command, int period) {
+        stopCharacteristicWrite();
+
+        characteristic.setValue(command);
+
+        Timber.d("writeCharacteristic : " + command);
+
+        characteristicWriteDisposable =
+                Observable.intervalRange(0, 3, 0 , period, TimeUnit.SECONDS)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
+                        .subscribe(
+                                aLong -> {
+                                    Timber.d("times : " + aLong);
+                                    if(!allowConnect) {
+                                        Timber.d("allowConnect4 = " + allowConnect);
+
+                                        disconnect();
+
+                                        return;
+                                    }
+                                    if(aLong == 2) {
+                                        disconnect(gatt);
+                                    }
+                                    else if(aLong < 2){
+                                        Observable.just(gatt.writeCharacteristic(characteristic)).subscribe();
+                                    }
+                                    else {
+                                        characteristicWriteDisposable.dispose();
+                                    }
+                                },
+                                throwable -> Timber.d(throwable)
+                        );
+    }
+    @Override
+    public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+        super.onCharacteristicRead(gatt, characteristic, status);
+
+        Timber.d("onCharacteristicRead");
+    }
+
+    @Override
+    public void onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
+        super.onDescriptorRead(gatt, descriptor, status);
     }
 
     @Override
     public void shutdown() {
         if(BT_gatt != null) {
-            BluetoothGattService bluetoothGattService = BT_gatt.getService(UUID.fromString(variable.getShutDownServicesUUID()));
-
-            BluetoothGattCharacteristic characteristic = bluetoothGattService.getCharacteristic(UUID.fromString(variable.getShutDownCharactersticUUID()));
-
-            characteristic.setValue(variable.getShutdownCommand());
-
-            BT_gatt.writeCharacteristic(characteristic);
+            disconnect();
         }
     }
 
@@ -249,12 +269,20 @@ public class TaiDocMeterConnection extends BaseConnection {
         if(descriptorWriteDisposable != null) {
             descriptorWriteDisposable.dispose();
         }
+
+        if(characteristicWriteDisposable != null) {
+            characteristicWriteDisposable.dispose();
+        }
     }
 
     @Override
     public void onDenyNotify() {
         if(descriptorWriteDisposable != null) {
             descriptorWriteDisposable.dispose();
+        }
+
+        if(characteristicWriteDisposable != null) {
+            characteristicWriteDisposable.dispose();
         }
     }
 }

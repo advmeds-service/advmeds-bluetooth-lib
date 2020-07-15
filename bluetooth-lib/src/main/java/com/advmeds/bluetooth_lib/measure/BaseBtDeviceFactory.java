@@ -1,6 +1,10 @@
 package com.advmeds.bluetooth_lib.measure;
 
 
+import com.advmeds.bluetooth_lib.measure.dspcombo.DspComboConnection;
+import com.advmeds.bluetooth_lib.measure.dspcombo.DspComboDevice;
+import com.advmeds.bluetooth_lib.measure.dspcombo.decoder.DspComboDecoder;
+import com.advmeds.bluetooth_lib.measure.dspcombo.variable.DspComboVariable;
 import com.advmeds.bluetooth_lib.measure.gaomu.GaomuDevice;
 import com.advmeds.bluetooth_lib.measure.gaomu.decoder.GaomuBaseTempDecoder01;
 import com.advmeds.bluetooth_lib.measure.gaomu.variable.GaomuNormalVariable;
@@ -66,6 +70,9 @@ public class BaseBtDeviceFactory {
             case "TAIDOC TD4141":
                 return new TaiDocDevice(new TaiDocBaseUADecoder01()
                                         , new TaiDocMeterConnection(new TaiDocMeterVariable()));
+            case "BDE_WEIXIN_TTM":
+                return new DspComboDevice(new DspComboDecoder()
+                        , new DspComboConnection(new DspComboVariable()));
         }
 
         return null;

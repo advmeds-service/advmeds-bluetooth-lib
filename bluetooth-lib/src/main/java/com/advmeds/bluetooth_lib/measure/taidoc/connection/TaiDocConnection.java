@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 
+import com.advmeds.bluetooth_lib.measure.BaseConnection;
 import com.advmeds.bluetooth_lib.measure.taidoc.TaiDocConnectionCallBack;
 import com.advmeds.bluetooth_lib.measure.taidoc.variable.TaiDocVariable;
 
@@ -20,7 +21,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class TaiDocConnection extends TaiDocBaseConnection {
+public class TaiDocConnection extends BaseConnection {
     private TaiDocVariable variable;
 
     private Disposable servicesDiscoveredDisposable;
