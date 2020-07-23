@@ -70,7 +70,7 @@ public class BaseBtDeviceFactory {
             case "TAIDOC TD4141":
                 return new TaiDocDevice(new TaiDocBaseUADecoder01()
                                         , new TaiDocMeterConnection(new TaiDocMeterVariable()));
-            case "BDE_WEIXIN_TTM":
+            case "DSP Combo":
                 return new DspComboDevice(new DspComboDecoder()
                         , new DspComboConnection(new DspComboVariable()));
         }
