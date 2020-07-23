@@ -8,4 +8,6 @@ public interface BaseBtCallBack {
     void onReceiveData(String... values);
 
     void onDeviceConnected();
+
+    void onMeasureFail();
 }

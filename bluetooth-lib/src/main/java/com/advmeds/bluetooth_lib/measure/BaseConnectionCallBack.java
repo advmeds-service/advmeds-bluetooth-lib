@@ -4,4 +4,6 @@ public interface BaseConnectionCallBack {
     void receiveData(byte[] rawData);
 
     void connectionDisconnect();
+
+    void measuerFail();
 }

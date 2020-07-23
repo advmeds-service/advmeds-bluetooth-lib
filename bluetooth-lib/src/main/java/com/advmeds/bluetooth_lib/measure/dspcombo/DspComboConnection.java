@@ -152,7 +152,6 @@ public class DspComboConnection extends BaseConnection {
         }
     }
 
-
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
         super.onCharacteristicChanged(gatt, characteristic);
@@ -176,6 +175,12 @@ public class DspComboConnection extends BaseConnection {
             stopCharacteristicWrite();
 
             callBack.receiveData(characteristic.getValue());
+        }
+        else if(response.contains("DDJSOK")) {
+
+        }
+        else {
+            callBack.measuerFail();
         }
     }
 

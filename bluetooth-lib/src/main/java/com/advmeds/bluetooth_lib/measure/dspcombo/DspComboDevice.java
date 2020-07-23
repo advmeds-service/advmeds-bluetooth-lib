@@ -58,4 +58,9 @@ public class DspComboDevice extends BaseBtDevice implements BaseConnectionCallBa
     public void connectionDisconnect() {
         callBack.onDeivceConnectFail();
     }
+
+    @Override
+    public void measuerFail() {
+        callBack.onMeasureFail();
+    }
 }
