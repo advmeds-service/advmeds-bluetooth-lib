@@ -58,4 +58,9 @@ public class TaiDocDevice extends BaseBtDevice implements BaseConnectionCallBack
     public void connectionDisconnect() {
         callBack.onDeivceConnectFail();
     }
+
+    @Override
+    public void measuerFail() {
+
+    }
 }
