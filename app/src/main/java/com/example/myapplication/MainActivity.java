@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
 
     private ScanCallback scanCallback = new ScanCallback(this);
 
-    private String deviceName = "BDE_WEIXIN_TTM";
+    private String deviceName = "DSP Combo";
     private String searchName = "BDE_WEIXIN_TTM";
 
     // 632 = 30:45:11:E3:BC:67
@@ -67,6 +67,11 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
     @Override
     public void onDeviceConnected() {
         Timber.d("onDeviceConnected");
+    }
+
+    @Override
+    public void onMeasureFail() {
+            Timber.d("onMeasureFail");
     }
 
     @Override

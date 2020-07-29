@@ -2,6 +2,8 @@ package com.advmeds.bluetooth_lib.measure.dspcombo.decoder;
 
 import com.advmeds.bluetooth_lib.measure.BaseBtDataDecoder;
 
+import java.math.BigDecimal;
+
 import timber.log.Timber;
 
 public class DspComboDecoder implements BaseBtDataDecoder {
@@ -17,14 +19,16 @@ public class DspComboDecoder implements BaseBtDataDecoder {
             return null;
         }
 
-        String result = raw.substring(6, 9);
+        String result = raw.substring(7, 10);
 
-        if(result.startsWith("0")) {
-            result = result.substring(1);
-        }
+        BigDecimal bd = new BigDecimal(result);
 
-        Timber.d(result);
+        BigDecimal bd2 = new BigDecimal("0.18");
 
-        return new String[] {result};
+        long answer = Math.round(bd.multiply(bd2).doubleValue());
+
+        Timber.d("answer = %s", answer);
+
+        return new String[] {Long.toString(answer)};
     }
 }
