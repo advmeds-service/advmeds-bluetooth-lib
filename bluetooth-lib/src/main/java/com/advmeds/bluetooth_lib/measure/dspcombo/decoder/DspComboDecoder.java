@@ -19,11 +19,15 @@ public class DspComboDecoder implements BaseBtDataDecoder {
             return null;
         }
 
-        String result = raw.substring(7, 10);
+        String result = raw.substring(6, 9);
+
+        if(result.startsWith("0")) {
+            result = result.substring(1);
+        }
 
         BigDecimal bd = new BigDecimal(result);
 
-        BigDecimal bd2 = new BigDecimal("0.18");
+        BigDecimal bd2 = new BigDecimal("1.8");
 
         long answer = Math.round(bd.multiply(bd2).doubleValue());
 
