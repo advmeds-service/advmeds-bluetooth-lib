@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
         Timber.d("onDeviceFound : %s", bluetoothLeDevice.getName());
 //        Timber.d("onDeviceFound : %s", bluetoothLeDevice.getAddress());
 
-        if (bluetoothLeDevice.getName() != null && bluetoothLeDevice.getName().contains(searchName) && scanCallback.isScanning() && bluetoothLeDevice.getAddress().equals("30:45:11:E3:BC:67")) {
-            Timber.d("onDeviceFound : %s", bluetoothLeDevice.getAddress());
+        if (bluetoothLeDevice.getName() != null && bluetoothLeDevice.getName().contains(searchName) && scanCallback.isScanning()) {
+            Timber.d("onDeviceFound2 : %s", bluetoothLeDevice.getAddress());
             ViseBle.getInstance().stopScan(scanCallback);
 
             baseBtDevice.startConnect(this, bluetoothLeDevice.getDevice());

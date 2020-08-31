@@ -6,5 +6,8 @@
     <string name="error_force_shutdown">強制關機</string>
     <string name="error_device_temp_too_high">設備溫度過高</string>
     <string name="error_measurement_failed">量測失敗</string>
+    <string name="error_finger_not_putin">手指未放入</string>
+    <string name="error_senser_not_prepare">探頭未插入或接觸不良</string>
+    <string name="error_measure_not_stable">量測資料不穩定</string>
 
 </resources>

@@ -177,14 +177,25 @@ public class DspComboConnection extends BaseConnection {
 
             callBack.receiveData(characteristic.getValue());
         }
-        else if(response.contains("CWHM")) {
-            callBack.measuerFail(getErrorMessage(response));
-        }
         else if(response.contains("DDJSOK")) {
 
         }
-        else {
+        else if(response.contains("CWHM") ||
+                response.contains("CCERRO") ||
+                response.contains("CCERTT") ||
+                response.contains("CCERBW")) {
+            stopCharacteristicWrite();
+
             callBack.measuerFail(getErrorMessage(response));
+
+            shutdown();
+        }
+        else {
+            stopCharacteristicWrite();
+
+            callBack.measuerFail(getErrorMessage(response));
+
+            shutdown();
         }
     }
 
@@ -225,6 +236,15 @@ public class DspComboConnection extends BaseConnection {
         }
         else if(result.contains("CWHM05")) {
             return context.getString(R.string.error_device_temp_too_high);
+        }
+        else if(result.contains("CCERRO")) {
+            return context.getString(R.string.error_finger_not_putin);
+        }
+        else if(result.contains("CCERTT")) {
+            return context.getString(R.string.error_senser_not_prepare);
+        }
+        else if(result.contains("CCERBW")) {
+            return context.getString(R.string.error_measure_not_stable);
         }
         else {
             return context.getString(R.string.error_measurement_failed);

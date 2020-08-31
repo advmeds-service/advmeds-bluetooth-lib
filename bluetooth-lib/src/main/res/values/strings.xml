@@ -7,5 +7,8 @@
     <string name="error_force_shutdown">Force to shutdown</string>
     <string name="error_device_temp_too_high">Device temperature is too high</string>
     <string name="error_measurement_failed">Measurement failed</string>
+    <string name="error_finger_not_putin">No finger put in</string>
+    <string name="error_senser_not_prepare">No probe inserted or poor contact</string>
+    <string name="error_measure_not_stable">Measurement data unstable</string>
 
 </resources>
