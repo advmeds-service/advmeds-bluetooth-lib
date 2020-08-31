@@ -5,5 +5,5 @@ public interface BaseConnectionCallBack {
 
     void connectionDisconnect();
 
-    void measuerFail();
+    void measuerFail(String message);
 }

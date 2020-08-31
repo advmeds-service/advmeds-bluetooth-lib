@@ -60,7 +60,7 @@ public class DspComboDevice extends BaseBtDevice implements BaseConnectionCallBa
     }
 
     @Override
-    public void measuerFail() {
-        callBack.onMeasureFail();
+    public void measuerFail(String message) {
+        callBack.onMeasureFail(message);
     }
 }

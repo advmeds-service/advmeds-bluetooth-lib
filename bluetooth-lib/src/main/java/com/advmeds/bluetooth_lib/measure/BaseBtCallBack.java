@@ -9,5 +9,5 @@ public interface BaseBtCallBack {
 
     void onDeviceConnected();
 
-    void onMeasureFail();
+    void onMeasureFail(String message);
 }

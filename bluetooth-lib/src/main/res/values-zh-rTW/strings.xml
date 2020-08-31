@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_energy_not_enough">電量不足</string>
+    <string name="error_finger_temp_too_low">手指溫度過低</string>
+    <string name="error_infrared_unusual">紅外線異常</string>
+    <string name="error_force_shutdown">強制關機</string>
+    <string name="error_device_temp_too_high">設備溫度過高</string>
+    <string name="error_measurement_failed">量測失敗</string>
+
+</resources>

@@ -12,6 +12,8 @@ import com.advmeds.bluetooth_lib.measure.taidoc.TaiDocConnectionCallBack;
 import timber.log.Timber;
 
 abstract public class BaseConnection  extends BluetoothGattCallback {
+    protected Context context;
+
     protected BluetoothGatt BT_gatt;
 
     protected BaseConnectionCallBack callBack;
@@ -21,6 +23,8 @@ abstract public class BaseConnection  extends BluetoothGattCallback {
     protected boolean allowNotify = true; //是否允許繼續接收數據變動
 
     public void startConnect(Context _context, BluetoothDevice bluetoothDevice, BaseConnectionCallBack _callBack) {
+        this.context = _context;
+
         this.callBack = _callBack;
 
         allowConnect = true;

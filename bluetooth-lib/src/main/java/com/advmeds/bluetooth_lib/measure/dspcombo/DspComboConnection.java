@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 
+import com.advmeds.bluetooth_lib.R;
 import com.advmeds.bluetooth_lib.measure.BaseConnection;
 import com.advmeds.bluetooth_lib.measure.dspcombo.variable.DspComboVariable;
 
@@ -176,11 +177,14 @@ public class DspComboConnection extends BaseConnection {
 
             callBack.receiveData(characteristic.getValue());
         }
+        else if(response.contains("CWHM")) {
+            callBack.measuerFail(getErrorMessage(response));
+        }
         else if(response.contains("DDJSOK")) {
 
         }
         else {
-            callBack.measuerFail();
+            callBack.measuerFail(getErrorMessage(response));
         }
     }
 
@@ -205,6 +209,28 @@ public class DspComboConnection extends BaseConnection {
            execCharacteristicWrite(gatt, descriptor.getCharacteristic(), variable.getInitialCommand(), 5);
         }
     }
+
+    private String getErrorMessage(String result) {
+        if(result.contains("CWHM01")) {
+            return context.getString(R.string.error_finger_temp_too_low);
+        }
+        else if(result.contains("CWHM02")) {
+            return context.getString(R.string.error_infrared_unusual);
+        }
+        else if(result.contains("CWHM03")) {
+            return context.getString(R.string.error_energy_not_enough);
+        }
+        else if(result.contains("CWHM04")) {
+            return context.getString(R.string.error_force_shutdown);
+        }
+        else if(result.contains("CWHM05")) {
+            return context.getString(R.string.error_device_temp_too_high);
+        }
+        else {
+            return context.getString(R.string.error_measurement_failed);
+        }
+    }
+
 
     private void stopCharacteristicWrite() {
         if(characteristicWriteDisposable != null && !characteristicWriteDisposable.isDisposed()) {

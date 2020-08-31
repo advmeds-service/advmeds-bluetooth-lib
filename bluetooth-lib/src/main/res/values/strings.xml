@@ -1,4 +1,11 @@
 <resources>
-    <string name="app_name">bluetooth-lib</string>
-    <string name="Test">test</string>
+    <string name="app_name" translatable="false">bluetooth-lib</string>
+    <string name="Test" translatable="false">test</string>
+    <string name="error_energy_not_enough">Battery low</string>
+    <string name="error_finger_temp_too_low">Finger temperature is too low</string>
+    <string name="error_infrared_unusual">Infrared abnormal</string>
+    <string name="error_force_shutdown">Force to shutdown</string>
+    <string name="error_device_temp_too_high">Device temperature is too high</string>
+    <string name="error_measurement_failed">Measurement failed</string>
+
 </resources>
