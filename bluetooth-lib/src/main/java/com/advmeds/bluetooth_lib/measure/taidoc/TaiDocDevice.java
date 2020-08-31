@@ -60,7 +60,8 @@ public class TaiDocDevice extends BaseBtDevice implements BaseConnectionCallBack
     }
 
     @Override
-    public void measuerFail() {
+    public void measuerFail(String message) {
 
     }
+
 }
