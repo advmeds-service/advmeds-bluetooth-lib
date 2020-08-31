@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
     }
 
     @Override
-    public void onMeasureFail() {
-            Timber.d("onMeasureFail");
+    public void onMeasureFail(String message) {
+        Timber.d("onMeasureFail" + message);
     }
 
     @Override
