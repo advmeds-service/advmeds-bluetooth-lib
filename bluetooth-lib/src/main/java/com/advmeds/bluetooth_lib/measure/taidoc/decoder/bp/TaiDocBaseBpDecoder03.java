@@ -17,21 +17,12 @@ public class TaiDocBaseBpDecoder03 implements BaseBtDataDecoder {
             return null;
         }
 
-        if(receiveData[5] <= 3) {
-            String sugar = String.valueOf(receiveData[2] & 0xFF);
+        String sbp =  String.valueOf((receiveData[2] & 0xFF)  + ((receiveData[3] & 0xFF) * 256));
 
-            return new String[] {sugar};
-        }
+        String dbp = String.valueOf(receiveData[4] & 0xFF);
 
-        else {
-            String sbp = String.valueOf(receiveData[2] & 0xFF);
+        String pulse = String.valueOf(receiveData[5] & 0xFF);
 
-            String dbp = String.valueOf(receiveData[4] & 0xFF);
-
-            String pulse = String.valueOf(receiveData[5] & 0xFF);
-
-            return new String[] {sbp, dbp, pulse};
-        }
-
+        return new String[] {sbp, dbp, pulse};
     }
 }
