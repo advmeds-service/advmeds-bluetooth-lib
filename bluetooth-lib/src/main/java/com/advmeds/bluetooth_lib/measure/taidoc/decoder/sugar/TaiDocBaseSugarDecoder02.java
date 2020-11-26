@@ -18,10 +18,9 @@ public class TaiDocBaseSugarDecoder02 implements BaseBtDataDecoder {
             return null;
         }
 
-        int sugar = (receiveData[12] & 0xFF);
+        int sugar = (receiveData[12] & 0xFF) + ((receiveData[11] & 0xFF) * 256);
 
-        if(sugar < 4
-                || sugar >= 255) {
+        if(sugar < 4) {
             return null;
         }
 

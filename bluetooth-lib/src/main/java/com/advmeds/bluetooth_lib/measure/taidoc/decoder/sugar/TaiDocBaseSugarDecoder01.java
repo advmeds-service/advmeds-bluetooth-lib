@@ -16,7 +16,7 @@ public class TaiDocBaseSugarDecoder01 implements BaseBtDataDecoder {
             return null;
         }
 
-        String sugar = String.valueOf(receiveData[2] & 0xFF);
+        String sugar = String.valueOf((receiveData[2] & 0xFF) + ((receiveData[3] & 0xFF) * 256));
 
         return new String[] {sugar};
     }
