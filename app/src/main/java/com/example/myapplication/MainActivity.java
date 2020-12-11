@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.advmeds.bluetooth_lib.measure.BaseBtCallBack;
 import com.advmeds.bluetooth_lib.measure.BaseBtDevice;
 import com.advmeds.bluetooth_lib.measure.BaseBtDeviceFactory;
+import com.advmeds.bluetooth_lib.measure.VitalSign;
 import com.vise.baseble.ViseBle;
 import com.vise.baseble.callback.scan.IScanCallback;
 import com.vise.baseble.callback.scan.ScanCallback;
@@ -23,8 +24,8 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
 
     private ScanCallback scanCallback = new ScanCallback(this);
 
-    private String deviceName = "DSP Combo";
-    private String searchName = "BDE_WEIXIN_TTM";
+    private String deviceName = "TAIDOC TD4216";
+    private String searchName = "TAIDOC TD4216 A7B8";
 
     // 632 = 30:45:11:E3:BC:67
     //
@@ -58,10 +59,13 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
     }
 
     @Override
-    public void onReceiveData(String... values) {
+    public void onReceiveData(VitalSign vitalSign) {
         Timber.d("onReceiveData");
+        Timber.d(vitalSign.getGlucose());
 
-        Timber.d(values[0]);
+//        Timber.d("Data length = " + vitalSign.length);
+
+//        Timber.d(vitalSign[0]);
     }
 
     @Override
