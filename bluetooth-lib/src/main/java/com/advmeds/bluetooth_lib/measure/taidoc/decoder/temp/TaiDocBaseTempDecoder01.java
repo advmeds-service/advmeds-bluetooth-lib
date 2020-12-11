@@ -1,6 +1,7 @@
 package com.advmeds.bluetooth_lib.measure.taidoc.decoder.temp;
 
 import com.advmeds.bluetooth_lib.measure.BaseBtDataDecoder;
+import com.advmeds.bluetooth_lib.measure.VitalSign;
 
 import timber.log.Timber;
 
@@ -14,7 +15,7 @@ import timber.log.Timber;
  */
 public class TaiDocBaseTempDecoder01 implements BaseBtDataDecoder {
     @Override
-    public String[] decode(byte[] receiveData) {
+    public VitalSign decode(byte[] receiveData) {
         if(receiveData == null || receiveData.length != 8) {
             return null;
         }
@@ -24,6 +25,7 @@ public class TaiDocBaseTempDecoder01 implements BaseBtDataDecoder {
         Timber.d("%s",  (receiveData[2] & 0xFF));
 
         if (originTemp > 0) {
+            VitalSign vs = new VitalSign();
 
             if(originTemp >= 1000) {
                 double temp = (double) originTemp / 100;
@@ -32,14 +34,18 @@ public class TaiDocBaseTempDecoder01 implements BaseBtDataDecoder {
 
                 Timber.d("%s", temp);
 
-                return new String[] {String.valueOf(temp)};
+                vs.setTemperature(String.valueOf(temp));
+
+                return vs;
             }
             else {
                 double temp = (double) originTemp / 10;
 
                 Timber.d("%s", temp);
 
-                return new String[] {String.valueOf(temp)};
+                vs.setTemperature(String.valueOf(temp));
+
+                return vs;
             }
         }
         else {

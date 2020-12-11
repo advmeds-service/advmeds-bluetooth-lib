@@ -14,6 +14,7 @@ import com.advmeds.bluetooth_lib.measure.taidoc.connection.TaiDocMeterConnection
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.bp.TaiDocBaseBpDecoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.bp.TaiDocBaseBpDecoder02;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.bp.TaiDocBaseBpDecoder03;
+import com.advmeds.bluetooth_lib.measure.taidoc.decoder.mix.TaiDocMixDecoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.o2.TaiDocBaseO2Decoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.sugar.TaiDocBaseSugarDecoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.sugar.TaiDocBaseSugarDecoder02;
@@ -63,13 +64,16 @@ public class BaseBtDeviceFactory {
             case "FORA GD40":
                 return new TaiDocDevice(new TaiDocBaseSugarDecoder01()
                                         , new TaiDocConnection(new TaiDocNormalVariable()));
-            case "TAIDOC TD4216":
-            case "TAIDOC TD4206":
-                return new TaiDocDevice(new TaiDocBaseSugarDecoder02()
-                                        , new TaiDocMeterConnection(new TaiDocMeterVariable()));
+//            case "TAIDOC TD4216":
+//
+//                return new TaiDocDevice(new TaiDocBaseSugarDecoder02()
+//                                        , new TaiDocMeterConnection(new TaiDocMeterVariable()));
             case "TAIDOC TD4141":
-                return new TaiDocDevice(new TaiDocBaseUADecoder01()
-                                        , new TaiDocMeterConnection(new TaiDocMeterVariable()));
+            case "FORA MD6":
+            case "TAIDOC TD4206":
+            case "TAIDOC TD4216":
+                return new TaiDocDevice(new TaiDocMixDecoder01()
+                                        , new TaiDocConnection(new TaiDocNormalVariable()));
             case "DSP Combo":
                 return new DspComboDevice(new DspComboDecoder()
                         , new DspComboConnection(new DspComboVariable()));

@@ -5,7 +5,7 @@ import android.content.Context;
 
 public abstract class BaseBtDevice {
     protected BaseBtCallBack callBack;
-
+    
     protected BaseBtDataDecoder decoder;
 
     protected boolean autoStopReceive = false;

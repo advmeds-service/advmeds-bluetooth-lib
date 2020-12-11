@@ -5,7 +5,7 @@ public interface BaseBtCallBack {
 
     void onNoData();
 
-    void onReceiveData(String... values);
+    void onReceiveData(VitalSign vitalSign);
 
     void onDeviceConnected();
 

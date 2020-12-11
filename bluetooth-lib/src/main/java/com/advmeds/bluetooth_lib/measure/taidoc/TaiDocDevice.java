@@ -7,6 +7,7 @@ import com.advmeds.bluetooth_lib.measure.BaseBtDataDecoder;
 import com.advmeds.bluetooth_lib.measure.BaseBtDevice;
 import com.advmeds.bluetooth_lib.measure.BaseConnection;
 import com.advmeds.bluetooth_lib.measure.BaseConnectionCallBack;
+import com.advmeds.bluetooth_lib.measure.VitalSign;
 
 public class TaiDocDevice extends BaseBtDevice implements BaseConnectionCallBack {
     private BaseConnection baseConnection;
@@ -33,7 +34,7 @@ public class TaiDocDevice extends BaseBtDevice implements BaseConnectionCallBack
 
     @Override
     public void receiveData(byte[] rawData) {
-        String[] data = decoder.decode(rawData);
+        VitalSign data = decoder.decode(rawData);
 
         if(data != null) {
             if(autoStopReceive) {

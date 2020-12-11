@@ -27,7 +27,7 @@ public class TaiDocConnection extends BaseConnection {
     private Disposable servicesDiscoveredDisposable;
 
     private Disposable descriptorWriteDisposable;
-
+    
     public TaiDocConnection(TaiDocVariable _variable) {
         variable = _variable;
     }
@@ -36,7 +36,7 @@ public class TaiDocConnection extends BaseConnection {
     public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
         super.onConnectionStateChange(gatt, status, newState);
 
-        if(newState == BluetoothProfile.STATE_CONNECTED) {
+        if (newState == BluetoothProfile.STATE_CONNECTED) {
             if(servicesDiscoveredDisposable != null && !servicesDiscoveredDisposable.isDisposed()) {
                 servicesDiscoveredDisposable.dispose();
             }

@@ -1,6 +1,7 @@
 package com.advmeds.bluetooth_lib.measure.taidoc.decoder.sugar;
 
 import com.advmeds.bluetooth_lib.measure.BaseBtDataDecoder;
+import com.advmeds.bluetooth_lib.measure.VitalSign;
 
 /**
  * 適用機台:
@@ -9,15 +10,17 @@ import com.advmeds.bluetooth_lib.measure.BaseBtDataDecoder;
  */
 public class TaiDocBaseSugarDecoder01 implements BaseBtDataDecoder {
     @Override
-    public String[] decode(byte[] receiveData) {
+    public VitalSign decode(byte[] receiveData) {
         if(receiveData == null
                 || receiveData.length != 8
                 || receiveData[2] == 0) {
             return null;
         }
 
-        String sugar = String.valueOf((receiveData[2] & 0xFF) + ((receiveData[3] & 0xFF) * 256));
+        VitalSign vs = new VitalSign();
 
-        return new String[] {sugar};
+        vs.setGlucose(String.valueOf((receiveData[2] & 0xFF) + ((receiveData[3] & 0xFF) * 256)));
+
+        return vs;
     }
 }

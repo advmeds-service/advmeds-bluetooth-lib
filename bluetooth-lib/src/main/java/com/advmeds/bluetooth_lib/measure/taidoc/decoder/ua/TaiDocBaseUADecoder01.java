@@ -1,16 +1,16 @@
 package com.advmeds.bluetooth_lib.measure.taidoc.decoder.ua;
 
 import com.advmeds.bluetooth_lib.measure.BaseBtDataDecoder;
+import com.advmeds.bluetooth_lib.measure.VitalSign;
 
 import timber.log.Timber;
 
 /**
  * 適用機台:
- *      TAIDOC 4141(WITH METER)
  */
 public class TaiDocBaseUADecoder01 implements BaseBtDataDecoder {
     @Override
-    public String[] decode(byte[] receiveData) {
+    public VitalSign decode(byte[] receiveData) {
         if(receiveData != null
             && receiveData.length != 15) {
 
@@ -23,7 +23,10 @@ public class TaiDocBaseUADecoder01 implements BaseBtDataDecoder {
             || ua > 200) {
             return null;
         }
+        VitalSign vs = new VitalSign();
 
-        return new String[] {String.valueOf(ua/10)};
+        vs.setUricAcid(String.valueOf(ua/10));
+
+        return vs;
     }
 }

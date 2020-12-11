@@ -1,10 +1,11 @@
 package com.advmeds.bluetooth_lib.measure.gaomu.decoder;
 
 import com.advmeds.bluetooth_lib.measure.BaseBtDataDecoder;
+import com.advmeds.bluetooth_lib.measure.VitalSign;
 
 public class GaomuBaseTempDecoder01 implements BaseBtDataDecoder {
     @Override
-    public String[] decode(byte[] receiveData) {
+    public VitalSign decode(byte[] receiveData) {
         char[] hexArray = "0123456789ABCDEF".toCharArray();
 
         char[] hexChars = new char[receiveData.length * 2];
@@ -28,6 +29,10 @@ public class GaomuBaseTempDecoder01 implements BaseBtDataDecoder {
             DValue = (double) INTValue / 10;
         }
 
-        return new String[] {String.valueOf(DValue)};
+        VitalSign vs = new VitalSign();
+
+        vs.setTemperature(String.valueOf(DValue));
+
+        return vs;
     }
 }

@@ -1,6 +1,7 @@
 package com.advmeds.bluetooth_lib.measure.dspcombo.decoder;
 
 import com.advmeds.bluetooth_lib.measure.BaseBtDataDecoder;
+import com.advmeds.bluetooth_lib.measure.VitalSign;
 
 import java.math.BigDecimal;
 
@@ -8,7 +9,7 @@ import timber.log.Timber;
 
 public class DspComboDecoder implements BaseBtDataDecoder {
     @Override
-    public String[] decode(byte[] receiveData) {
+    public VitalSign decode(byte[] receiveData) {
         String raw = new String(receiveData);
 
         Timber.d(raw);
@@ -33,6 +34,10 @@ public class DspComboDecoder implements BaseBtDataDecoder {
 
         Timber.d("answer = %s", answer);
 
-        return new String[] {Long.toString(answer)};
+        VitalSign vs = new VitalSign();
+
+        vs.setGlucose(Long.toString(answer));
+
+        return vs;
     }
 }
