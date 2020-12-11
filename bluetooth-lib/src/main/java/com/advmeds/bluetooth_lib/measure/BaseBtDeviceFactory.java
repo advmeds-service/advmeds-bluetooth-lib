@@ -9,12 +9,14 @@ import com.advmeds.bluetooth_lib.measure.gaomu.GaomuDevice;
 import com.advmeds.bluetooth_lib.measure.gaomu.decoder.GaomuBaseTempDecoder01;
 import com.advmeds.bluetooth_lib.measure.gaomu.variable.GaomuNormalVariable;
 import com.advmeds.bluetooth_lib.measure.taidoc.TaiDocDevice;
+import com.advmeds.bluetooth_lib.measure.taidoc.connection.ForaD40bConnection;
 import com.advmeds.bluetooth_lib.measure.taidoc.connection.TaiDocConnection;
 import com.advmeds.bluetooth_lib.measure.taidoc.connection.TaiDocMeterConnection;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.bp.TaiDocBaseBpDecoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.bp.TaiDocBaseBpDecoder02;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.bp.TaiDocBaseBpDecoder03;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.mix.TaiDocMixDecoder01;
+import com.advmeds.bluetooth_lib.measure.taidoc.decoder.mix.TaiDocMixDecoder02;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.o2.TaiDocBaseO2Decoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.sugar.TaiDocBaseSugarDecoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.sugar.TaiDocBaseSugarDecoder02;
@@ -33,8 +35,8 @@ public class BaseBtDeviceFactory {
     public static BaseBtDevice createBtDevice(String deviceName) {
         switch (deviceName) {
             case "FORA D40":
-                return new TaiDocDevice(new TaiDocBaseBpDecoder03()
-                                        , new TaiDocConnection(new TaiDocNormalVariable()));
+                return new TaiDocDevice(new TaiDocMixDecoder02()
+                                        , new ForaD40bConnection(new TaiDocNormalVariable()));
             case "FORA P30 PLUS":
             case "TAIDOC TD3140":
                 return new TaiDocDevice(new TaiDocBaseBpDecoder02()

@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
 
     private ScanCallback scanCallback = new ScanCallback(this);
 
-    private String deviceName = "TAIDOC TD4216";
-    private String searchName = "TAIDOC TD4216 A7B8";
+    private String deviceName = "FORA D40";
+    private String searchName = "FORA D40";
 
     // 632 = 30:45:11:E3:BC:67
     //
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements BaseBtCallBack, I
     @Override
     public void onReceiveData(VitalSign vitalSign) {
         Timber.d("onReceiveData");
-        Timber.d(vitalSign.getGlucose());
+        Timber.d(vitalSign.getSystolic());
 
 //        Timber.d("Data length = " + vitalSign.length);
 

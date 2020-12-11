@@ -22,7 +22,7 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class TaiDocConnection extends BaseConnection {
-    private TaiDocVariable variable;
+    protected TaiDocVariable variable;
 
     private Disposable servicesDiscoveredDisposable;
 
@@ -159,7 +159,7 @@ public class TaiDocConnection extends BaseConnection {
         Timber.d( "onCharacteristicChanged : " + characteristic.getValue().length);
 
         for(int i = 0 ; i < characteristic.getValue().length ; i ++) {
-            Timber.d("" + characteristic.getValue()[i]);
+            Timber.d("Value" + characteristic.getValue()[i]);
         }
 
         callBack.receiveData(characteristic.getValue());
