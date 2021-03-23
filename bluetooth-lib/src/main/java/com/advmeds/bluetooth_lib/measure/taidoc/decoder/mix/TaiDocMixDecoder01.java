@@ -64,7 +64,7 @@ public class TaiDocMixDecoder01 implements BaseBtDataDecoder {
             case 12: // 血中乳酸
                 b2 = new BigDecimal("9.008");
 
-                vs.setLactate(b1.divide(b2,1, BigDecimal.ROUND_HALF_UP).setScale(1, BigDecimal.ROUND_HALF_UP).toString());
+                vs.setLactate(b1.divide(b2,1, BigDecimal.ROUND_DOWN).setScale(1, BigDecimal.ROUND_DOWN).toString());
                 break;
         }
 
