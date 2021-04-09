@@ -12,6 +12,7 @@ import com.advmeds.bluetooth_lib.measure.taidoc.TaiDocDevice;
 import com.advmeds.bluetooth_lib.measure.taidoc.connection.ForaD40bConnection;
 import com.advmeds.bluetooth_lib.measure.taidoc.connection.TaiDocConnection;
 import com.advmeds.bluetooth_lib.measure.taidoc.connection.TaiDocMeterConnection;
+import com.advmeds.bluetooth_lib.measure.taidoc.connection.TaiDocTD25SerialConnection;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.bp.TaiDocBaseBpDecoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.bp.TaiDocBaseBpDecoder02;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.bp.TaiDocBaseBpDecoder03;
@@ -20,6 +21,7 @@ import com.advmeds.bluetooth_lib.measure.taidoc.decoder.mix.TaiDocMixDecoder02;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.o2.TaiDocBaseO2Decoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.sugar.TaiDocBaseSugarDecoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.sugar.TaiDocBaseSugarDecoder02;
+import com.advmeds.bluetooth_lib.measure.taidoc.decoder.td25serial.TaiDocTd25SerialDecoder;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.temp.TaiDocBaseTempDecoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.ua.TaiDocBaseUADecoder01;
 import com.advmeds.bluetooth_lib.measure.taidoc.decoder.weight.TaiDocBaseWeightDecoder01;
@@ -29,6 +31,7 @@ import com.advmeds.bluetooth_lib.measure.taidoc.variable.TaiDocTD2555Variable;
 import com.advmeds.bluetooth_lib.measure.taidoc.variable.TaiDocTD3140Variable;
 import com.advmeds.bluetooth_lib.measure.taidoc.variable.TaiDocTD8201Variable;
 import com.advmeds.bluetooth_lib.measure.taidoc.variable.TaiDocTD8255Variable;
+import com.advmeds.bluetooth_lib.measure.taidoc.variable.TaidocTD25SerialVariable;
 
 public class BaseBtDeviceFactory {
 
@@ -76,6 +79,9 @@ public class BaseBtDeviceFactory {
             case "TAIDOC TD4216":
                 return new TaiDocDevice(new TaiDocMixDecoder01()
                                         , new TaiDocConnection(new TaiDocNormalVariable()));
+            case "FORA W600":
+                return new TaiDocDevice(new TaiDocTd25SerialDecoder()
+                                        , new TaiDocTD25SerialConnection(new TaidocTD25SerialVariable()));
             case "DSP Combo":
                 return new DspComboDevice(new DspComboDecoder()
                         , new DspComboConnection(new DspComboVariable()));
