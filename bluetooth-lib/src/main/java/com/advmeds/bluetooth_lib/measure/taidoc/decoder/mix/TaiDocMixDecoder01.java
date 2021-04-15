@@ -44,9 +44,9 @@ public class TaiDocMixDecoder01 implements BaseBtDataDecoder {
                 vs.setHematocrit(value);
                 break;
             case 7: // 血酮
-                b2 = new BigDecimal("0.3");
+                b2 = new BigDecimal("30");
 
-                vs.setKetone(b1.multiply(b2).toString());
+                vs.setKetone(b1.divide(b2,1, BigDecimal.ROUND_DOWN).setScale(1, BigDecimal.ROUND_DOWN).toString());
                 break;
             case 8: // 尿酸
                 b2 = new BigDecimal("0.1");
