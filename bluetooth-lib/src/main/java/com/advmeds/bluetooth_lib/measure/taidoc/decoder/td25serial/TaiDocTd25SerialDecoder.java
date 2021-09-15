@@ -10,7 +10,7 @@ import com.advmeds.bluetooth_lib.measure.VitalSign;
 public class TaiDocTd25SerialDecoder implements BaseBtDataDecoder {
     @Override
     public VitalSign decode(byte[] receiveData) {
-        if(receiveData == null || receiveData.length != 40) {
+        if(receiveData == null || receiveData.length < 32) {
             return null;
         }
         Double weight = (((receiveData[16] & 0xFF) * 256) + (receiveData[17] & 0xFF)) / 10.0;

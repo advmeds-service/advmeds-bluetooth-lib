@@ -48,8 +48,8 @@ public class BaseBtDeviceFactory {
                 return new TaiDocDevice(new TaiDocBaseBpDecoder01()
                                         , new TaiDocConnection(new TaiDocNormalVariable()));
             case "TAIDOC TD2555":
-                return new TaiDocDevice(new TaiDocBaseWeightDecoder01()
-                                        , new TaiDocConnection(new TaiDocTD2555Variable()));
+                return new TaiDocDevice(new TaiDocTd25SerialDecoder()
+                        , new TaiDocTD25SerialConnection(new TaiDocTD2555Variable()));
             case "TAIDOC TD1241":
             case "TAIDOC TD1261":
             case "TAIDOC TD1035":

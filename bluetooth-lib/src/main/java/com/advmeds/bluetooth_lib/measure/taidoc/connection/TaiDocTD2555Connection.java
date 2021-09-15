@@ -18,7 +18,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class TaiDocTD25SerialConnection extends BaseConnection {
+class TaiDocTD2555Connection extends BaseConnection {
     protected TaiDocVariable variable;
 
     private Disposable servicesDiscoveredDisposable;
@@ -27,7 +27,7 @@ public class TaiDocTD25SerialConnection extends BaseConnection {
 
     private ArrayList<Byte> receiveBuffer = new ArrayList<>();
 
-    public TaiDocTD25SerialConnection(TaiDocVariable _variable) {
+    public TaiDocTD2555Connection(TaiDocVariable _variable) {
         variable = _variable;
     }
 
@@ -158,34 +158,25 @@ public class TaiDocTD25SerialConnection extends BaseConnection {
         super.onCharacteristicChanged(gatt, characteristic);
 
         Timber.d( "onCharacteristicChanged : " + characteristic.getValue().length);
+        Timber.d("UUID = " + characteristic.getUuid().toString());
 
-        if(receiveBuffer.size() == 0) {
-            if(characteristic.getValue().length > 3 && characteristic.getValue()[0] == 81) {
-                for(int i = 0 ; i < characteristic.getValue().length ; i ++) {
-                    Timber.d("Value" + characteristic.getValue()[i]);
 
-                    receiveBuffer.add(characteristic.getValue()[i]);
-                }
-            }
+        for(int i = 0 ; i < characteristic.getValue().length ; i ++) {
+            Timber.d("Value" + characteristic.getValue()[i]);
+
+            receiveBuffer.add(characteristic.getValue()[i]);
         }
-        else {
-            for(int i = 0 ; i < characteristic.getValue().length ; i ++) {
-                Timber.d("Value" + characteristic.getValue()[i]);
 
-                receiveBuffer.add(characteristic.getValue()[i]);
+
+        if(receiveBuffer.size() >= 40) {
+            byte[] result = new byte[40];
+
+            for(int i = 0; i<receiveBuffer.size(); i++) {
+                result[i] = receiveBuffer.get(i);
             }
+            receiveBuffer = new ArrayList<>();
 
-            if(receiveBuffer.size() >= (receiveBuffer.get(2)&0xFF) + 5) {
-                byte[] result = new byte[(receiveBuffer.get(2)&0xFF) + 5];
-
-                for(int i = 0; i<result.length; i++) {
-                    result[i] = receiveBuffer.get(i);
-                }
-
-                receiveBuffer = new ArrayList<>();
-
-                callBack.receiveData(result);
-            }
+            callBack.receiveData(result);
         }
     }
 
