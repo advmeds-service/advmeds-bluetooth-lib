@@ -27,6 +27,24 @@ public class VitalSign {
     String lactate = "";
     /// 體重
     String weight = "";
+    String bmi = "";
+    //基礎代謝率
+    String bmr = "";
+    //活動代謝率
+    String amr = "";
+    //體脂率
+    String bodyFat = "";
+    //肌肉量
+    String bodyMuscle = "";
+    //骨重
+    String bodyBone = "";
+    //水分
+    String bodyWater = "";
+    //代謝年齡
+    String metabolicAge = "";
+    //內臟脂肪
+    String visceralFatRating = "";
+
 
     public String getSystolic() {
         return systolic;
@@ -130,5 +148,77 @@ public class VitalSign {
 
     public void setWeight(String weight) {
         this.weight = weight;
+    }
+
+    public String getBmi() {
+        return bmi;
+    }
+
+    public void setBmi(String bmi) {
+        this.bmi = bmi;
+    }
+
+    public String getBmr() {
+        return bmr;
+    }
+
+    public void setBmr(String bmr) {
+        this.bmr = bmr;
+    }
+
+    public String getAmr() {
+        return amr;
+    }
+
+    public void setAmr(String amr) {
+        this.amr = amr;
+    }
+
+    public String getBodyFat() {
+        return bodyFat;
+    }
+
+    public void setBodyFat(String bodyFat) {
+        this.bodyFat = bodyFat;
+    }
+
+    public String getBodyMuscle() {
+        return bodyMuscle;
+    }
+
+    public void setBodyMuscle(String bodyMuscle) {
+        this.bodyMuscle = bodyMuscle;
+    }
+
+    public String getBodyBone() {
+        return bodyBone;
+    }
+
+    public void setBodyBone(String bodyBone) {
+        this.bodyBone = bodyBone;
+    }
+
+    public String getBodyWater() {
+        return bodyWater;
+    }
+
+    public void setBodyWater(String bodyWater) {
+        this.bodyWater = bodyWater;
+    }
+
+    public String getMetabolicAge() {
+        return metabolicAge;
+    }
+
+    public void setMetabolicAge(String age) {
+        this.metabolicAge = age;
+    }
+
+    public String getVisceralFatRating() {
+        return visceralFatRating;
+    }
+
+    public void setVisceralFatRating(String visceralFatRating) {
+        this.visceralFatRating = visceralFatRating;
     }
 }
