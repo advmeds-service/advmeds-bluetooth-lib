@@ -18,8 +18,8 @@ public class TaiDocTd25SerialDecoder implements BaseBtDataDecoder {
             return null;
         }
         Double weight = (((receiveData[16] & 0xFF) * 256) + (receiveData[17] & 0xFF)) / 10.0;
-        
-        int height = ((receiveData[11] & 0xFF) * 256);
+
+        int height = receiveData[11] & 0xFF;
 
         VitalSign vs = new VitalSign();
 
