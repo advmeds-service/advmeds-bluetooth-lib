@@ -27,6 +27,8 @@ public class VitalSign {
     String lactate = "";
     /// 體重
     String weight = "";
+    //身高
+    String height = "";
     String bmi = "";
     //基礎代謝率
     String bmr = "";
@@ -148,6 +150,14 @@ public class VitalSign {
 
     public void setWeight(String weight) {
         this.weight = weight;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
     }
 
     public String getBmi() {

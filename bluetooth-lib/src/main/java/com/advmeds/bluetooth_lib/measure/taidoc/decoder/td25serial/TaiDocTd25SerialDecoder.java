@@ -18,10 +18,14 @@ public class TaiDocTd25SerialDecoder implements BaseBtDataDecoder {
             return null;
         }
         Double weight = (((receiveData[16] & 0xFF) * 256) + (receiveData[17] & 0xFF)) / 10.0;
+        
+        int height = ((receiveData[11] & 0xFF) * 256);
 
         VitalSign vs = new VitalSign();
 
         vs.setWeight(String.valueOf(weight));
+
+        vs.setHeight(String.valueOf(height));
 
         if(receiveData.length == 40) {
             BigDecimal bmi = new BigDecimal(((receiveData[20] & 0xFF) * 256) + (receiveData[21] & 0xFF)).multiply(new BigDecimal("0.1"));
