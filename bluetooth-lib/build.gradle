@@ -27,22 +27,22 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-//
-//    task androidSourcesJar(type: Jar) {
-//        classifier 'sources'
-//        from android.sourceSets.main.java.srcDirs
-//    }
-//
-//    project.afterEvaluate {
-//        publishing {
-//            publications {
-//                release(MavenPublication) {
-//                    from components.release
-//                    artifact androidSourcesJar // optional sources
-//                }
-//            }
-//        }
-//    }
+
+    task androidSourcesJar(type: Jar) {
+        classifier 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    project.afterEvaluate {
+        publishing {
+            publications {
+                release(MavenPublication) {
+                    from components.release
+                    artifact androidSourcesJar // optional sources
+                }
+            }
+        }
+    }
 }
 
 dependencies {
