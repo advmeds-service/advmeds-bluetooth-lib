@@ -1,2 +1,4 @@
 jdk:
-  - openjdk9
+  - openjdk11
+install:
+  - ./gradlew build :lib:publishToMavenLocal
